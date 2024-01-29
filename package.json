@@ -1,0 +1,32 @@
+{
+  "name": "kb-price-processor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine --config=jasmine.json",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gikkman/kb-price-processor.git"
+  },
+  "keywords": [],
+  "author": "Gikkamn",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Gikkman/kb-price-processor/issues"
+  },
+  "homepage": "https://github.com/Gikkman/kb-price-processor#readme",
+  "devDependencies": {
+    "@types/jasmine": "^5.1.4",
+    "@types/node": "^20.11.7",
+    "jasmine": "^5.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "fast-xml-parser": "^4.3.3"
+  }
+}
