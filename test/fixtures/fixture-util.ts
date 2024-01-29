@@ -2,13 +2,13 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { readXml } from '../../src/util/xml';
 
-export enum Project {
-    merx = "merx"
+export enum Fixture {
+    merx = "merx.xml",
+    config = "config-override.json"
 }
 
-export function getXmlFixturePath(project: Project) {
-    const name = project+".xml";
-    return path.join("test", "fixtures", name);
+export function getFixturePath(fixture: Fixture) {
+    return path.join("test", "fixtures", fixture);
 }
 
 export function loadXmlResult(path: string) {

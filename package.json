@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jasmine --config=jasmine.json",
-    "build": "tsc"
+    "check": "tsc --noEmit",
+    "run": "ts-node src/merx/main.ts"
   },
   "repository": {
     "type": "git",
@@ -21,12 +22,14 @@
   "devDependencies": {
     "@types/jasmine": "^5.1.4",
     "@types/node": "^20.11.7",
+    "@types/ssh2-sftp-client": "^9.0.3",
     "jasmine": "^5.1.0",
-    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {
     "axios": "^1.6.7",
-    "fast-xml-parser": "^4.3.3"
+    "basic-ftp": "^5.0.4",
+    "fast-xml-parser": "^4.3.3",
+    "ts-node": "^10.9.2"
   }
 }

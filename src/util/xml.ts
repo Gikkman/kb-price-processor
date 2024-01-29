@@ -22,7 +22,9 @@ export async function readXml<T extends object>(location: string, forceStringPro
 }
 
 export function stringify(obj: object) {
-    const builder = new XMLBuilder();
+    const builder = new XMLBuilder({
+        format: true
+    });
     return builder.build(obj) as string;
 }
 

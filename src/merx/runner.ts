@@ -3,11 +3,12 @@ import { MerxProduct, MerxProductOverview } from "./types";
 import { Config } from "../util/config";
 import files from "../util/files";
 import { readXml, stringify } from "../util/xml";
+import { upload  } from "../util/ftp";
 
 export default { fetchXml, run, uploadXml }
 
 async function fetchXml(config: Config) {
-    const xmlDocument = await readXml<MerxProductOverview>(config.merx.input, ["article_nr"]);
+    const xmlDocument = await readXml<MerxProductOverview>(config.merx.input, ["article_nr", "rek_pris", "thickness"]);
     return xmlDocument;
 }
 
@@ -33,7 +34,7 @@ async function run(xmlDocument: MerxProductOverview, workDir: string, config: Co
 }
 
 async function uploadXml(xmlFileLocation: string, config: Config) {
-    
+    await upload(config.merx.upload, {inputPath: xmlFileLocation, uploadPath: config.merx.upload.path})
 }
 
 /********************************************************************
@@ -71,8 +72,9 @@ export function processPriceRule(product: MerxProduct) {
     // Sell price: price * priceFactor * minimum_sell. If the result is less than 100, add 3.
     // Price factor: if netprice == 0 -> 1.3 , if netprice == 1 -> 2.25
     const priceFactor = calculatePriceFactor(product);
-    const sellPrice = Math.round(product.price * priceFactor * product.minimum_sell);
-    return (sellPrice >= 100) ? sellPrice : (sellPrice + 3);
+    const sellPrice = product.price * priceFactor * product.minimum_sell;
+    const adjustedSellPrice = sellPrice < 100 ? sellPrice + 3 : sellPrice;
+    return Math.ceil(adjustedSellPrice);
 }
 
 function calculatePriceFactor(product: MerxProduct) {

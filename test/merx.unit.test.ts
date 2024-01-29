@@ -74,8 +74,14 @@ describe("Test Merx runner |", () => {
     })
 
     it("given calculated price is 100, no price addition", () => {
-        const fixture: MerxProduct = {price: 4.444, netprice: 1, minimum_sell: 10} as MerxProduct;
+        const fixture: MerxProduct = {price: (10/2.25), netprice: 1, minimum_sell: 10} as MerxProduct;
         const newPrice = MerxRunner.processPriceRule(fixture);
         expect(newPrice).toEqual(100);
+    })
+
+    it("given calculated price is 99.9, price addition is applied", () => {
+        const fixture: MerxProduct = {price: (10/2.25)-0.01, netprice: 1, minimum_sell: 10} as MerxProduct;
+        const newPrice = MerxRunner.processPriceRule(fixture);
+        expect(newPrice).toEqual(103);
     })
 })

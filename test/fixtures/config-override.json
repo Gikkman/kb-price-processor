@@ -1,0 +1,9 @@
+{
+    "merx": {
+        "input": "http://my-host.com",
+        "upload": {
+            "user": "user",
+            "pass": "123456"
+        }
+    }
+}

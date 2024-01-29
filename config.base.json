@@ -3,11 +3,11 @@
         "input": "http://xml.merxteam.com/xml_sv.php?key=XXXX",
         "output": "merx.xml",
         "upload": {
-            "protocol": "ftp",
-            "ip": "127.0.0.1",
-            "port": "21",
+            "host": "127.0.0.1",
+            "port": 21,
             "user": "username",
-            "pass": "password"
+            "pass": "password",
+            "path": "merx.xml" 
         }
     }
 }
