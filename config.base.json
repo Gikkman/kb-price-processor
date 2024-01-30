@@ -9,5 +9,8 @@
             "pass": "password",
             "path": "merx.xml" 
         }
+    },
+    "log": {
+        "level": "INFO"
     }
 }

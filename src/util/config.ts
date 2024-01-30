@@ -1,38 +1,32 @@
 import files from "./files";
 import baseConfig from '../../config.base.json'
+import logger from "./logger";
 
-export type Config = typeof baseConfig;
+export type Configuration = typeof baseConfig;
 type Obj = Record<keyof any, any>;
 
-let configCache: Config;
+let configCache: Configuration;
 
 export default {
     initialize: async () => {
         const overrideConfigPath = files.relativeToRoot("config.override.json");
         configCache = await mergeConfigIfOverridesPresent(baseConfig, overrideConfigPath);
+        return configCache;
     },
-    getConfig: (): Config => {
-        if (!configCache) throw "Config is not initialized. Please call config.initialize() first."
-        return { ...configCache };
-    }
 }
 
-export async function mergeConfigIfOverridesPresent(baseConfig: Config, overridePath: string): Promise<Config> {
+export async function mergeConfigIfOverridesPresent(baseConfig: Configuration, overridePath: string): Promise<Configuration> {
+  logger.debug(`Configuration overrides lookup at '${overridePath}`)
     if (await files.exists(overridePath)) {
+      logger.debug("Configuration overrides found")
         const overrides = JSON.parse(await files.read(overridePath));
-        return mergeDeep(baseConfig, overrides) as Config;
+        return mergeDeep(baseConfig, overrides) as Configuration;
     }
+    logger.warn("Configuration overrides not found. The project will use only the config from 'config.base.json'")
     return baseConfig;
 }
 
-/**
-* Performs a deep merge of objects and returns new object. Does not modify
-* objects (immutable) and merges arrays via concatenation.
-*
-* @param {...object} objects - Objects to merge
-* @returns {object} New object with merged key/values
-*/
-export function mergeDeep(...objects: Obj[]) {
+export function mergeDeep(...objects: Obj[]): object {
     const isObject = (obj: any): obj is Obj => obj && typeof obj === 'object';
     
     return objects.reduce((prev: Obj, obj: Obj) => {

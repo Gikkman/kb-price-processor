@@ -1,18 +1,18 @@
 import path from "path";
 import { MerxProduct, MerxProductOverview } from "./types";
-import { Config } from "../util/config";
+import { Configuration } from "../util/config";
 import files from "../util/files";
 import { readXml, stringify } from "../util/xml";
 import { upload  } from "../util/ftp";
 
 export default { fetchXml, run, uploadXml }
 
-async function fetchXml(config: Config) {
+async function fetchXml(config: Configuration) {
     const xmlDocument = await readXml<MerxProductOverview>(config.merx.input, ["article_nr", "rek_pris", "thickness"]);
     return xmlDocument;
 }
 
-async function run(xmlDocument: MerxProductOverview, workDir: string, config: Config) {
+async function run(xmlDocument: MerxProductOverview, workDir: string, config: Configuration) {
     // Apply rules
     const processedProducts: MerxProduct[] = []
     for(const product of xmlDocument.merx_products.product) {
@@ -33,7 +33,7 @@ async function run(xmlDocument: MerxProductOverview, workDir: string, config: Co
     return outputFileLocation;
 }
 
-async function uploadXml(xmlFileLocation: string, config: Config) {
+async function uploadXml(xmlFileLocation: string, config: Configuration) {
     await upload(config.merx.upload, {inputPath: xmlFileLocation, uploadPath: config.merx.upload.path})
 }
 

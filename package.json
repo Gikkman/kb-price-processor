@@ -1,12 +1,12 @@
 {
-  "name": "kb-price-processor",
+  "name": "pop-price-processor",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "jasmine --config=jasmine.json",
-    "check": "tsc --noEmit",
-    "run": "ts-node src/merx/main.ts"
+    "build": "tsc --noEmit",
+    "merx": "ts-node src/merx/main.ts"
   },
   "repository": {
     "type": "git",

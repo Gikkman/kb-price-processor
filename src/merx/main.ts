@@ -1,29 +1,34 @@
 import config from "../util/config";
 import files from "../util/files";
+import logger from "../util/logger";
 import runner from "./runner";
 
 async function main() {
-    await config.initialize();
-    const configuration = config.getConfig();
-    console.log(`Initialized configuration`)
-
-    const workDir = await files.ensureDir('_work');
-    console.log(`Created work directory ${workDir}`)
-
-    const xmlDocument = await runner.fetchXml(configuration)
-    console.log(`Downloaded xml document successfully`)
-
-    const outputFileLocation = await runner.run(xmlDocument, workDir, configuration)
-    console.log(`Processed xml document successfully. Output written to ${outputFileLocation}`)
+    const configuration = await config.initialize();
+    logger.initialize(configuration, "MERX");
+    logger.info(`Initialized configuration`)
     
+    logger.info(`Creating work directory`)
+    const workDir = await files.ensureDir('_work');
+    logger.info(`Created work directory ${workDir}`)
+
+    logger.info(`Downlading xml document`)
+    const xmlDocument = await runner.fetchXml(configuration)
+    logger.info(`Downloaded xml document successfully`)
+    
+    logger.info(`Processing xml document`)
+    const outputFileLocation = await runner.run(xmlDocument, workDir, configuration)
+    logger.info(`Processed xml document successfully. Output written to ${outputFileLocation}`)
+    
+    logger.info(`Uploading xml document`)
     await runner.uploadXml(outputFileLocation, configuration);
-    console.log(`Uploaded xml document to ${configuration.merx.upload.path}`)
+    logger.info(`Uploaded xml document to ${configuration.merx.upload.path}`)
 }
 main()
-.then(() => {
-    console.log("Task completed successfully");
-})
-.catch(e => {
-    console.log("AN ERROR OCCURRED DURING MERX XML PROCESSING")
-    console.log(e)
-})
+    .then(() => {
+        logger.info("Task completed successfully");
+    })
+    .catch(e => {
+        logger.err("AN ERROR OCCURRED DURING MERX XML PROCESSING")
+        console.log(e)
+    })
